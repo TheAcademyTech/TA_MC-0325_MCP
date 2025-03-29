@@ -28,40 +28,6 @@ services:
       timeout: 5s
       retries: 5
 
-  # mcp_server:
-  #   build:
-  #     context: .
-  #     dockerfile: docker/mcp/Dockerfile
-  #     args:
-  #       POSTGRES_HOST: ${POSTGRES_HOST}
-  #       POSTGRES_PORT: ${POSTGRES_PORT}
-  #       POSTGRES_DB: ${POSTGRES_DB}
-  #       POSTGRES_USER: ${POSTGRES_USER}
-  #       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-  #       DEBUG: ${DEBUG}
-  #   container_name: ${MCP_CONTAINER_NAME}
-  #   depends_on:
-  #     db:
-  #       condition: service_healthy
-  #   environment:
-  #     POSTGRES_HOST: ${POSTGRES_HOST}
-  #     POSTGRES_PORT: ${POSTGRES_PORT}
-  #     POSTGRES_DB: ${POSTGRES_DB}
-  #     POSTGRES_USER: ${POSTGRES_USER}
-  #     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-  #     DEBUG: ${DEBUG}
-  #   stdin_open: true
-  #   tty: true
-  #   networks:
-  #     - mcp_network
-  #   volumes:
-  #     - ./src/mcp_server.py:/app/mcp_server.py
-
 volumes:
   postgres_data:
     name: ${VOLUME_NAME}
-
-networks:
-  mcp_network:
-    name: ${NETWORK_NAME}
-    driver: bridge
