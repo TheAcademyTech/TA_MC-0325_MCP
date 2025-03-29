@@ -61,7 +61,7 @@ volumes:
   postgres_data:
     name: ${VOLUME_NAME}
 
-networks:
-  mcp_network:
-    name: ${NETWORK_NAME}
-    driver: bridge
+# networks:
+#   mcp_network:
+#     name: ${NETWORK_NAME}
+#     driver: bridge
