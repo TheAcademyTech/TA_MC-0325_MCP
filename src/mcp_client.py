@@ -28,18 +28,19 @@ class GroqConfig:
     retry_wait_max: int = 10
 
 class GroqMCPClient:
-    """A client for interacting with MCP servers using Groq's LLM capabilities.
+    """A client that enables natural language interaction with databases using Groq LLMs and MCP.
     
-    This client manages communication with an MCP server and uses Groq's LLM to process
-    queries and execute tools. It supports interactive chat and dynamic model switching.
+    This client combines Groq's LLM capabilities with the Model Context Protocol (MCP) to allow
+    users to query databases using natural language. It handles server communication, tool execution,
+    and maintains conversation context.
     
     Attributes:
-        session: The MCP client session for server communication
-        exit_stack: Async context manager stack for resource cleanup
-        groq_client: The Groq API client instance
-        model: The current Groq model being used
-        stdio: The standard I/O transport for server communication
-        write: The write function for sending data to the server
+        session: MCP client session for server communication
+        exit_stack: Async context manager for resource cleanup
+        groq_client: Groq API client instance
+        model: Current Groq model being used
+        stdio: Standard I/O transport for server communication
+        write: Write function for sending data to the server
     """
     
     def __init__(self, config: Optional[GroqConfig] = None):
