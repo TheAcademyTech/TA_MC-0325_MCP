@@ -111,7 +111,7 @@ class GroqMCPClient:
             # Set up communication with the server
             stdio_transport = await self.exit_stack.enter_async_context(stdio_client(server_params))
             self.stdio, self.write = stdio_transport
-            self.session = await self.exit_stack.enter_async_context(ClientSession(self.stdio, self.write))
+            self.session = await self.exit_stack.enter_async_context(ClientSession(read_stream=self.stdio, write_stream=self.write))
             
             # Initialize the session
             await self.session.initialize()
@@ -308,6 +308,22 @@ class GroqMCPClient:
             response = await self.session.list_tools()
             mcp_tools = response.tools
             groq_tools = self._convert_tool_schema(mcp_tools)
+
+            # Get database schema information
+            schema_response = await self.session.call_tool("describe_database", {})
+            schema_info = schema_response.content
+            if isinstance(schema_info, str):
+                try:
+                    schema_info = json.loads(schema_info)
+                except json.JSONDecodeError:
+                    schema_info = {"error": "Could not parse schema information"}
+            elif not isinstance(schema_info, (dict, list)):
+                schema_info = str(schema_info)
+
+            messages.append({
+                "role": "system",
+                "content": f"Database schema information: {schema_info}"
+            })
 
             # Initial Groq API call
             response = await self._make_groq_api_call(messages, groq_tools)
